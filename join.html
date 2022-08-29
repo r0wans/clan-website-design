@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body class="bg-gray-900">
+
+    <div class="flex flex-col items-center justify-center h-screen">
+        <h5 class="text-xs text-blue-400 tracking-widest font-medium title-font mb-1">Taira</h1>
+        <h1 class="md:text-3xl text-2xl font-medium title-font text-white" id="holder">Loading Session</h1>
+    </div>
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var id = urlParams.get('id');
+        if(!id){
+            $('#holder').text('No Session ID');
+        }else{
+            //a
+            var decoded = atob(id);
+            console.log(decoded)
+            var i = 0;
+            var interval = setInterval(function() {
+                $('#holder').text("Session verivied: " + decoded.substring(0, i));
+                i++;
+                if (i > decoded.length) {
+                    clearInterval(interval);
+                }
+            }, 100);
+            setTimeout(function() {
+                //fetch post request
+                fetch('api/addAttendand', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: decoded
+                    })
+                }).then(function(response) {
+                    console.log(response)
+                })
+                window.location.href = "https://web.roblox.com/games/" + decoded;
+            }, 1500);
+        }
+
+    </script>
+</body>
+
+</html>
